@@ -13,14 +13,14 @@ public class SquareErrorOutputLayer implements OutputLayer {
   }
 
   @Override
-  public double getError(INDArray x) {
+  public double calculateError(INDArray x) {
     this.out = x;
     loss = out.sub(teacher).norm2Number().doubleValue();
     return loss;
   }
 
   @Override
-  public INDArray getDout() {
+  public INDArray calculateDout() {
     int size = teacher.rows();
     INDArray dx = out.sub(teacher).div(size);
     return dx;

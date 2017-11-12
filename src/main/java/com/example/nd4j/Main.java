@@ -28,8 +28,8 @@ public class Main {
       INDArray y = forward(network, trainings);
       finalLayer.setTeacher(teachers);
 
-      double z = finalLayer.getError(y);
-      INDArray dout = finalLayer.getDout();
+      double z = finalLayer.calculateError(y);
+      INDArray dout = finalLayer.calculateDout();
       backward(network, dout);
 
       System.out.println(z);
