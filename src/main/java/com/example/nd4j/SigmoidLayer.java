@@ -8,8 +8,8 @@ public class SigmoidLayer implements Layer {
   private INDArray out;
 
   @Override
-  public INDArray forward(INDArray x) {
-    this.out = Transforms.sigmoid(x);
+  public INDArray forward(INDArray in) {
+    this.out = Transforms.sigmoid(in);
     return out;
   }
 

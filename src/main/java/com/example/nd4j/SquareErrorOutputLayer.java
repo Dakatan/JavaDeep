@@ -20,7 +20,7 @@ public class SquareErrorOutputLayer implements OutputLayer {
   }
 
   @Override
-  public INDArray getDout(double dout) {
+  public INDArray getDout() {
     int size = teacher.rows();
     INDArray dx = out.sub(teacher).div(size);
     return dx;

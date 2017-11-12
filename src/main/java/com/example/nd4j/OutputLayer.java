@@ -5,5 +5,5 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 public interface OutputLayer {
   void setTeacher(INDArray teacher);
   double getError(INDArray x);
-  INDArray getDout(double dout);
+  INDArray getDout();
 }

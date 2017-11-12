@@ -29,18 +29,18 @@ public class Main {
       finalLayer.setTeacher(teachers);
 
       double z = finalLayer.getError(y);
-      INDArray dout = finalLayer.getDout(1.0);
+      INDArray dout = finalLayer.getDout();
       backward(network, dout);
 
       System.out.println(z);
     }
   }
 
-  public static INDArray forward(List<Layer> network, INDArray x) {
+  public static INDArray forward(List<Layer> network, INDArray in) {
     for(Layer layer : network) {
-      x = layer.forward(x);
+      in = layer.forward(in);
     }
-    return x;
+    return in;
   }
 
   public static INDArray backward(List<Layer> network, INDArray dout) {
