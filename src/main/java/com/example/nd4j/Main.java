@@ -11,47 +11,28 @@ public class Main {
   public static void main(String[] args) {
     INDArray trainings = Nd4j.create(new double[][]{{1.0, 1.0}, {0.0, 1.0}, {1.0, 0.0}, {0.0, 0.0}});
     INDArray teachers = Nd4j.create(new double[][]{{0.0}, {1.0}, {1.0}, {0.0}});
-    double q = 5;
-
-    INDArray w1 = Nd4j.randn(2, 3);
-    INDArray b1 = Nd4j.randn(1, 3);
-
-    INDArray w2 = Nd4j.randn(3, 3);
-    INDArray b2 = Nd4j.randn(1, 3);
-
-    INDArray w3 = Nd4j.randn(3, 1);
-    INDArray b3 = Nd4j.randn(1, 1);
-
-    Layer affineLayer1 = new AffineLayer(w1, b1);
-    Layer sigmoidLayer1 = new SigmoidLayer();
-
-    Layer affineLayer2 = new AffineLayer(w2, b2);
-    Layer sigmoidLayer2 = new SigmoidLayer();
-
-    Layer affineLayer3 = new AffineLayer(w3, b3);
-    Layer sigmoidLayer3 = new SigmoidLayer();
+    double learningRate = 5;
 
     List<Layer> network = new LinkedList<>();
-    network.add(affineLayer1);
-    network.add(sigmoidLayer1);
-    network.add(affineLayer2);
-    network.add(sigmoidLayer2);
-    network.add(affineLayer3);
-    network.add(sigmoidLayer3);
+    network.add(new AffineLayer(2, 3, learningRate));
+    network.add(new SigmoidLayer());
+    network.add(new AffineLayer(3, 3, learningRate));
+    network.add(new SigmoidLayer());
+    network.add(new AffineLayer(3, 1, learningRate));
+    network.add(new SigmoidLayer());
 
-    FinalLayer finalLayer = new FinalLayer();
+    OutputLayer finalLayer = new SquareErrorOutputLayer();
     finalLayer.setTeacher(teachers);
 
-    for(int i = 1; i <= 1000; i++) {
+    for(int i = 1; i <= 5000; i++) {
       INDArray y = forward(network, trainings);
-      double z = finalLayer.forward(y);
-      INDArray dout = finalLayer.backward(1.0);
+      finalLayer.setTeacher(teachers);
+
+      double z = finalLayer.getError(y);
+      INDArray dout = finalLayer.getDout(1.0);
       backward(network, dout);
 
-      System.out.println("COUNT: " + i);
-      System.out.println(y);
       System.out.println(z);
-      System.out.println();
     }
   }
 
