@@ -1,6 +1,7 @@
 package com.example.nd4j;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.ops.transforms.Transforms;
 
 public class SquareErrorOutputLayer implements OutputLayer {
   private INDArray teacher;
@@ -14,7 +15,7 @@ public class SquareErrorOutputLayer implements OutputLayer {
 
   @Override
   public double calculateError(INDArray x) {
-    this.out = x;
+    this.out = Transforms.softmax(x);
     loss = out.sub(teacher).norm2Number().doubleValue();
     return loss;
   }
