@@ -31,7 +31,7 @@ public class Main {
       backward(network, null);
     }
 
-    MNIST mnist2 = new MNIST(MNIST.DataType.TRAIN);
+    MNIST mnist2 = new MNIST(MNIST.DataType.TEST);
     for(int i = 0; i < 10; i++) {
       INDArray ans = forward(network, mnist2.getFeatures(i));
       System.out.println(ans);
