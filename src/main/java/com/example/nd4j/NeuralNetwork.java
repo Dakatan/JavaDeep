@@ -19,8 +19,8 @@ public class NeuralNetwork<T extends ActivationFunctionLayer> {
   public void learn() {
     for(int i = 1; i <= learningCount; i++) {
       outputLayer.setTeacher(trainingData.getTeacherData());
-      outputLayer.calculateError(forward(trainingData.getInputData()));
-      backward(outputLayer.calculateDout());
+      outputLayer.forward(forward(trainingData.getInputData()));
+      backward(outputLayer.backward());
     }
   }
 

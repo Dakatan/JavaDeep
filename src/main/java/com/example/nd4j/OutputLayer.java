@@ -2,8 +2,8 @@ package com.example.nd4j;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
 
-public interface OutputLayer {
+public interface OutputLayer extends Layer {
   void setTeacher(INDArray teacher);
-  double calculateError(INDArray x);
-  INDArray calculateDout();
+  double getError();
+  INDArray backward();
 }

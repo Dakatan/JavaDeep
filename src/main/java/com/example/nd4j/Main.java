@@ -1,14 +1,11 @@
 package com.example.nd4j;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.factory.Nd4j;
 
 import java.util.*;
 
 public class Main {
   public static void main(String[] args) throws Exception {
-//    INDArray trainings = Nd4j.create(new double[][]{{1.0, 1.0}, {0.0, 1.0}, {1.0, 0.0}, {0.0, 0.0}});
-//    INDArray teachers = Nd4j.create(new double[][]{{0.0}, {1.0}, {1.0}, {0.0}});
     double learningRate = 0.1;
 
     List<Layer> network = new LinkedList<>();
@@ -16,28 +13,30 @@ public class Main {
     int N1 = 100;
     int N2 = 100;
     int OUT = 10;
+    OutputLayer outputLayer = new SquareErrorOutputLayer();
     network.add(new AffineLayer(IN, N1, learningRate));
     network.add(new SigmoidLayer());
     network.add(new AffineLayer(N1, N2, learningRate));
     network.add(new SigmoidLayer());
     network.add(new AffineLayer(N2, OUT, learningRate));
-    network.add(new SigmoidLayer());
+    network.add(outputLayer);
 
-    OutputLayer outputLayer = new SquareErrorOutputLayer();
+    MNIST mnist1 = new MNIST(MNIST.DataType.TRAIN);
 
-    MNIST mnist = new MNIST(MNIST.DataType.TRAIN);
-
-    for(int i = 1; i <= 20000; i++) {
+    for(int i = 1; i <= 50000; i++) {
       int[] batchIndexes = createBatchIndex(100, 60000);
+      outputLayer.setTeacher(mnist1.getLabels(batchIndexes));
+      forward(network, mnist1.getFeatures(batchIndexes));
+      System.out.println("COUNT: " + i + ", LOSS: " + outputLayer.getError());
+      backward(network, null);
+    }
 
-      INDArray y = forward(network, mnist.getFeatures(batchIndexes));
-      outputLayer.setTeacher(mnist.getLabels(batchIndexes));
-
-      double z = outputLayer.calculateError(y);
-      INDArray dout = outputLayer.calculateDout();
-      backward(network, dout);
-
-      System.out.println(z);
+    MNIST mnist2 = new MNIST(MNIST.DataType.TRAIN);
+    for(int i = 0; i < 10; i++) {
+      INDArray ans = forward(network, mnist2.getFeatures(i));
+      System.out.println(ans);
+      System.out.println(mnist2.getLabels(i));
+      System.out.println();
     }
   }
 

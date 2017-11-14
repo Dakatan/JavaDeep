@@ -30,36 +30,36 @@ public class Practice {
 
     Random random = new Random();
 
-    for(int i = 1; i <= 1000; i++) {
-      int index = random.nextInt(4);
-
-      INDArray in = trainings.getRow(index);
-      INDArray teacher = teachers.getRow(index);
-
-      INDArray y1 = Transforms.sigmoid(in.mmul(w1).addRowVector(b1));
-      INDArray y2 = Transforms.sigmoid(y1.mmul(w2).addRowVector(b2));
-      INDArray y3 = Transforms.sigmoid(y2.mmul(w3).addRowVector(b3));
-
-      if(i == 1 || i % 100 == 0) {
-        System.out.println("COUNT: " + i);
-        plot(trainings, teachers, w1, b1, w2, b2, w3, b3);
-      }
-
-      INDArray oneVector1 = Nd4j.ones(1, 1);
-      INDArray delta3 = oneVector1.sub(y3).mul(y3).mul(y3.sub(teacher));
-      b3 = b3.sub(delta3.mul(q));
-      w3 = w3.sub(y2.transpose().mmul(delta3.mul(q)));
-
-      INDArray oneVector2 = Nd4j.ones(1, 3);
-      INDArray delta2 = oneVector2.sub(y2).mul(y2).mul(delta3.mmul(w3));
-      b2 = b2.sub(delta2.mul(q));
-      w2 = w2.sub(y1.transpose().mmul(delta2.mul(q)));
-
-      INDArray oneVector3 = Nd4j.ones(1, 3);
-      INDArray delta1 = oneVector3.sub(y1).mul(y1).mul(delta2.mmul(w2));
-      b1 = b1.sub(delta1.mul(q));
-      w1 = w1.sub(in.transpose().mmul(delta1.mul(q)));
-    }
+//    for(int i = 1; i <= 1000; i++) {
+//      int index = random.nextInt(4);
+//
+//      INDArray in = trainings.getRow(index);
+//      INDArray teacher = teachers.getRow(index);
+//
+//      INDArray y1 = Transforms.sigmoid(in.mmul(w1).addRowVector(b1));
+//      INDArray y2 = Transforms.sigmoid(y1.mmul(w2).addRowVector(b2));
+//      INDArray y3 = Transforms.sigmoid(y2.mmul(w3).addRowVector(b3));
+//
+//      if(i == 1 || i % 100 == 0) {
+//        System.out.println("COUNT: " + i);
+//        plot(trainings, teachers, w1, b1, w2, b2, w3, b3);
+//      }
+//
+//      INDArray oneVector1 = Nd4j.ones(1, 1);
+//      INDArray delta3 = oneVector1.sub(y3).mul(y3).mul(y3.sub(teacher));
+//      b3 = b3.sub(delta3.mul(q));
+//      w3 = w3.sub(y2.transpose().mmul(delta3.mul(q)));
+//
+//      INDArray oneVector2 = Nd4j.ones(1, 3);
+//      INDArray delta2 = oneVector2.sub(y2).mul(y2).mul(delta3.mmul(w3));
+//      b2 = b2.sub(delta2.mul(q));
+//      w2 = w2.sub(y1.transpose().mmul(delta2.mul(q)));
+//
+//      INDArray oneVector3 = Nd4j.ones(1, 3);
+//      INDArray delta1 = oneVector3.sub(y1).mul(y1).mul(delta2.mmul(w2));
+//      b1 = b1.sub(delta1.mul(q));
+//      w1 = w1.sub(in.transpose().mmul(delta1.mul(q)));
+//    }
 //    plot(trainings, teachers, w1, b1, w2, b2);
   }
 

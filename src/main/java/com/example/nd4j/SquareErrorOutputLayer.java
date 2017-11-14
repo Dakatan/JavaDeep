@@ -14,16 +14,26 @@ public class SquareErrorOutputLayer implements OutputLayer {
   }
 
   @Override
-  public double calculateError(INDArray x) {
-    this.out = Transforms.softmax(x);
-    loss = out.sub(teacher).norm2Number().doubleValue();
-    return loss;
+  public INDArray forward(INDArray in) {
+    this.out = Transforms.softmax(in);
+    loss = out.squaredDistance(teacher) / out.rows();
+    return out;
   }
 
   @Override
-  public INDArray calculateDout() {
+  public INDArray backward(INDArray dout) {
+    return backward();
+  }
+
+  @Override
+  public INDArray backward() {
     int size = teacher.rows();
     INDArray dx = out.sub(teacher).div(size);
     return dx;
+  }
+
+  @Override
+  public double getError() {
+    return loss;
   }
 }
