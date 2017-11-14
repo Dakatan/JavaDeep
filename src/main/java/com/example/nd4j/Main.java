@@ -23,7 +23,7 @@ public class Main {
 
     MNIST mnist1 = new MNIST(MNIST.DataType.TRAIN);
 
-    for(int i = 1; i <= 50000; i++) {
+    for(int i = 1; i <= 5000; i++) {
       int[] batchIndexes = createBatchIndex(100, 60000);
       outputLayer.setTeacher(mnist1.getLabels(batchIndexes));
       forward(network, mnist1.getFeatures(batchIndexes));
